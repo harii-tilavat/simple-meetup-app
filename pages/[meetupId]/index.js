@@ -8,7 +8,7 @@ const MeetupDetailPage = (props) => {
     <>
       <Head>
         <title>{props.meetup.title}</title>
-        <meta name="description" content={props.meetup.description}/>
+        <meta name="description" content={props.meetup.description} />
       </Head>
       <MeetupDetail {...props.meetup} />
     </>
@@ -23,7 +23,7 @@ export async function getStaticPaths() {
   const meetups = await meetupCollection.find({}, { _id: 1 }).toArray();
   const paths = meetups.map((meetup) => ({ params: { meetupId: meetup._id.toString() } }));
   return {
-    fallback: false,
+    fallback: "blocking",
     paths: paths,
   };
 }

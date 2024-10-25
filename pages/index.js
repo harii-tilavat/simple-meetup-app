@@ -55,19 +55,10 @@ const HomePage = (props) => {
   );
 };
 
-// export async function getServerSideProps(context) {
-// //await new Promise((resolve) => setTimeout(resolve, 5000));
-//   console.log("Context : ", context);
-//   return {
-//     props: {
-//       meetups: DUMMY_MEETUPS,
-//     },
-//   };
-// }
+// ----------------------- Server Side Rendering code -----------------------
 
-export async function getStaticProps() {
-  // await new Promise((resolve) => setTimeout(resolve, 5000));
-  // const client = new MongoClient("mongodb+srv://harittilavat10:97QvHMCLMf0OOu7Q@cluster0.xdqll.mongodb.net/meetups?retryWrites=true&w=majority&appName=Cluster0");
+export async function getServerSideProps() {
+  //await new Promise((resolve) => setTimeout(resolve, 5000));
   const client = await connectToDB();
   const db = client.db();
   const meetupCollection = db.collection("meetups");
@@ -78,7 +69,24 @@ export async function getStaticProps() {
     props: {
       meetups: updatedMeetups,
     },
-    revalidate: 1,
   };
 }
+// ----------------------- Static Site Generation code -----------------------
+
+// export async function getStaticProps() {
+//   // await new Promise((resolve) => setTimeout(resolve, 5000));
+//   // const client = new MongoClient("mongodb+srv://harittilavat10:97QvHMCLMf0OOu7Q@cluster0.xdqll.mongodb.net/meetups?retryWrites=true&w=majority&appName=Cluster0");
+//   const client = await connectToDB();
+//   const db = client.db();
+//   const meetupCollection = db.collection("meetups");
+//   const meetups = await meetupCollection.find().toArray();
+//   let updatedMeetups = meetups.map(({ _id, ...rest }) => ({ ...rest, id: _id.toString() }));
+
+//   return {
+//     props: {
+//       meetups: updatedMeetups,
+//     },
+//     revalidate: 1,
+//   };
+// }
 export default HomePage;
